@@ -5,7 +5,7 @@
  * @File Name: Admin.php
  * @Description:
  */
-namespace app\backstage\model;
+namespace app\headhunting\model;
 
 use think\Model;
 use think\Db;

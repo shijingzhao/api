@@ -5,7 +5,7 @@
  * @File Name: Admin.php
  * @Description:
  */
-namespace app\backstage\validate;
+namespace app\headhunting\validate;
 
 use think\Validate;
 

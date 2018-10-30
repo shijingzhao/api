@@ -5,13 +5,13 @@
  * @File Name: Admin.php
  * @Description:
  */
-namespace app\backstage\controller;
+namespace app\headhunting\controller;
 
 use think\Controller;
 use think\facade\Request;
-use app\backstage\controller\Permission;
-use app\backstage\model\Admin as AdminModel;
-use app\backstage\validate\Admin as AdminValidate;
+use app\headhunting\controller\Permission;
+use app\headhunting\model\Admin as AdminModel;
+use app\headhunting\validate\Admin as AdminValidate;
 
 class Admin extends Controller
 {

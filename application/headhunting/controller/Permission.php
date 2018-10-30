@@ -5,7 +5,7 @@
  * @File Name: Permission.php
  * @Description:
  */
-namespace app\backstage\controller;
+namespace app\headhunting\controller;
 
 use think\Controller;
 use think\facade\Session;
