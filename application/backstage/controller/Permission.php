@@ -18,7 +18,7 @@ class Permission extends Controller
      * @return
      */
     public static function is_login() {
-        if (Session::has('admin_id')) {
+        if (Session::has('headhunter_id')) {
             return 0;
         }
         else {

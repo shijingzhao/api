@@ -21,7 +21,7 @@ class Project extends Model
     public function create_new_project($param) {
         try {
             // 插入数据库
-            $param['headhunter_id'] = Session::get('admin_id');
+            $param['headhunter_id'] = Session::get('headhunter_id');
             $result = Db::name('project')->insert($param);
         }
         catch (\Exception $e) {
@@ -87,7 +87,7 @@ class Project extends Model
     public function my_project() {
         try {
             $result = Db::name('project')
-                ->where('backstage_id', Session::get('admin_id'))
+                ->where('backstage_id', Session::get('headhunter_id'))
                 ->field(
                     'number,
                      name,

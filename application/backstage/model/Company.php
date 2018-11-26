@@ -16,7 +16,7 @@ class Company
     public function create_new_Company($param) {
         try {
             // 插入数据库
-            $param['headhunter_id'] = Session::get('admin_id');
+            $param['headhunter_id'] = Session::get('headhunter_id');
             $result = Db::name('company')->insert($param);
         }
         catch (\Exception $e) {

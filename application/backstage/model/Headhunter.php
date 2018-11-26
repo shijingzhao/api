@@ -2,7 +2,7 @@
 /**
  * @Author: jingzhao
  * @Created Time : 2018/10/08 19:39
- * @File Name: Admin.php
+ * @File Name: Headhunter.php
  * @Description:
  */
 namespace app\backstage\model;
@@ -11,7 +11,7 @@ use think\Model;
 use think\Db;
 use think\facade\Session;
 
-class Admin extends Model
+class Headhunter extends Model
 {
     /**
      * 登录模型,验证登录账号是否正确
@@ -19,13 +19,13 @@ class Admin extends Model
      * @return
      */
     public function login($param) {
-        $result = Db::name('admin')->where('account', $param['account'])->field('admin_id, account, password, name, gender')->find();
+        $result = Db::name('headhunter')->where('account', $param['account'])->field('headhunter_id, account, password, name, gender')->find();
         if (empty($result)) {
             return ['code' => 1, 'message' => '账户不存在', 'data' => []];
         }
         else if ($result['password'] == $param['password']) {
-            Session::set('admin_id', $result['admin_id']);
-            Session::set('admin_name', $result['name']);
+            Session::set('headhunter_id', $result['headhunter_id']);
+            Session::set('headhunter_name', $result['name']);
             return ['code' => 0, 'message' => '登录成功', 'data' => []];
         }
         else {
@@ -34,14 +34,14 @@ class Admin extends Model
     }
 
     /**
-     * 登出模型,清除 admin_id 和 admin_name
+     * 登出模型,清除 headhunter_id 和 headhunter_name
      * @param
      * @return
      */
     public function logout() {
-        Session::delete('admin_id');
-        Session::delete('admin_name');
-        if (Session::has('admin_id') || Session::has('admin_name')) {
+        Session::delete('headhunter_id');
+        Session::delete('headhunter_name');
+        if (Session::has('headhunter_id') || Session::has('headhunter_name')) {
             return ['code' => 1, 'message' => '退出失败', 'data' => []];
         }
         else {
@@ -50,7 +50,7 @@ class Admin extends Model
     }
 
     public function index() {
-        $name = Session::get('admin_name');
+        $name = Session::get('headhunter_name');
         return $name ? $name : '';
     }
 }
