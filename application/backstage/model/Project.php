@@ -5,7 +5,7 @@
  * @File Name: Project.php
  * @Description:
  */
-namespace app\headhunting\model;
+namespace app\backstage\model;
 
 use think\Db;
 use think\Model;
@@ -21,16 +21,17 @@ class Project extends Model
     public function create_new_project($param) {
         try {
             // 插入数据库
+            $param['headhunter_id'] = Session::get('admin_id');
             $result = Db::name('project')->insert($param);
         }
         catch (\Exception $e) {
-            // echo $e->getMessage(); SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'JZ201809' for key 'number'
+            // echo $e->getMessage(); // SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'JZ201809' for key 'number'
             if (strpos($e->getMessage(), 'Integrity constraint violation')) {
-                return ['error_code' => 1, 'message' => '项目编号已存在,请您换一个编号', 'data' => []];
+                return ['code' => 1, 'message' => '项目编号已存在,请您换一个编号', 'data' => []];
             }
-            return ['error_code' => 1, 'message' => '数据字段不存在', 'data' => []];
+            return ['code' => 1, 'message' => '数据字段不存在', 'data' => []];
         }
-        return ['error_code' => 0, 'message' => '数据创建成功', 'data' => []];
+        return ['code' => 0, 'message' => '数据创建成功', 'data' => []];
     }
 
     /**
@@ -73,9 +74,9 @@ class Project extends Model
         catch (\Exception $e) {
             // 异常捕获
             // echo $e->getMessage();  table data not Found:db_project
-            return ['error_code' => 1, 'message' => '没有查到此条数据', 'data' => []];
+            return ['code' => 1, 'message' => '没有查到此条数据', 'data' => []];
         }
-        return ['error_code' => 0, 'message' => '数据查找成功', 'data' => $result];
+        return ['code' => 0, 'message' => '数据查找成功', 'data' => $result];
     }
 
     /**
@@ -86,7 +87,7 @@ class Project extends Model
     public function my_project() {
         try {
             $result = Db::name('project')
-                ->where('client_manager', '敬朝1')
+                ->where('backstage_id', Session::get('admin_id'))
                 ->field(
                     'number,
                      name,
@@ -102,8 +103,8 @@ class Project extends Model
         catch (\Exception $e) {
             // 异常捕获
             // echo $e->getMessage();  table data not Found:db_project
-            return ['error_code' => 1, 'message' => '没有查到此条数据', 'data' => []];
+            return ['code' => 1, 'message' => '没有查到此条数据', 'data' => []];
         }
-        return ['error_code' => 0, 'message' => '数据查找成功', 'data' => $result];
+        return ['code' => 0, 'message' => '数据查找成功', 'data' => $result];
     }
 }

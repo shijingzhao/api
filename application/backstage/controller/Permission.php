@@ -5,7 +5,7 @@
  * @File Name: Permission.php
  * @Description:
  */
-namespace app\headhunting\controller;
+namespace app\backstage\controller;
 
 use think\Controller;
 use think\facade\Session;
@@ -19,10 +19,10 @@ class Permission extends Controller
      */
     public static function is_login() {
         if (Session::has('admin_id')) {
-            return ['error_code' => 0, 'message' => 'is login', 'data' => []];
+            return 0;
         }
         else {
-            return ['error_code' => 1, 'message' => 'not login', 'data' => []];
+            return 1;
         }
     }
 }

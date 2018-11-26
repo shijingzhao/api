@@ -5,7 +5,7 @@
  * @File Name: Project.php
  * @Description:
  */
-namespace app\headhunting\validate;
+namespace app\backstage\validate;
 
 use think\Validate;
 
