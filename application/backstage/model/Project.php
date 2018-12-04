@@ -60,20 +60,20 @@ class Project extends Model
                      customer_contact,
                      customer_payer,
                      seeker,
-                     company_profile,
                      job_description,
                      industry,
                      function,
                      work_place,
                      recruits_number,
                      language,
-                     education'
+                     education,
+                     com_id'
                     )
                 ->findOrFail();
         }
         catch (\Exception $e) {
             // 异常捕获
-            // echo $e->getMessage();  table data not Found:db_project
+            // echo $e->getMessage();  // table data not Found:db_project
             return ['code' => 1, 'message' => '没有查到此条数据', 'data' => []];
         }
         return ['code' => 0, 'message' => '数据查找成功', 'data' => $result];
@@ -87,7 +87,7 @@ class Project extends Model
     public function my_project() {
         try {
             $result = Db::name('project')
-                ->where('backstage_id', Session::get('headhunter_id'))
+                ->where('headhunter_id', Session::get('headhunter_id'))
                 ->field(
                     'number,
                      name,
@@ -102,7 +102,7 @@ class Project extends Model
         }
         catch (\Exception $e) {
             // 异常捕获
-            // echo $e->getMessage();  table data not Found:db_project
+            // echo $e->getMessage();  // table data not Found:db_project
             return ['code' => 1, 'message' => '没有查到此条数据', 'data' => []];
         }
         return ['code' => 0, 'message' => '数据查找成功', 'data' => $result];

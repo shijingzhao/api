@@ -35,6 +35,9 @@ class Company extends Validate
             'com_tel',
             'nature',
             'introduction',
+        ],
+        'up'    => [
+            'com_id',
         ]
     ];
 }

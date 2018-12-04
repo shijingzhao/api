@@ -29,14 +29,14 @@ class Project extends Validate
         'customer_contact'      => 'require',
         'customer_payer'        => 'require',
         'seeker'                => 'require',
-        'company_profile'       => 'require',
         'job_description'       => 'require',
         'industry'              => 'require',
         'function'              => 'require',
         'work_place'            => 'require',
         'recruits_number'       => 'require',
         'language'              => 'require',
-        'education'             => 'require'
+        'education'             => 'require',
+        'com_id'                => 'require',
     ];
 
     // 验证场景
@@ -57,14 +57,14 @@ class Project extends Validate
             'customer_contact',
             'customer_payer',
             'seeker',
-            'company_profile',
             'job_description',
             'industry',
             'function',
             'work_place',
             'recruits_number',
             'language',
-            'education'
+            'education',
+            'com_id',
         ],
         'get'   =>  [
             'project_id'

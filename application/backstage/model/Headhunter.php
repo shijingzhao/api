@@ -19,14 +19,16 @@ class Headhunter extends Model
      * @return
      */
     public function login($param) {
-        $result = Db::name('headhunter')->where('account', $param['account'])->field('headhunter_id, account, password, name, gender')->find();
+        $result = Db::name('headhunter')->where('account', $param['account'])->field('headhunter_id, account, password, name, gender, permission')->find();
         if (empty($result)) {
             return ['code' => 1, 'message' => '账户不存在', 'data' => []];
         }
-        else if ($result['password'] == $param['password']) {
+        else if (password_verify($param['password'], $result['password'])) {
             Session::set('headhunter_id', $result['headhunter_id']);
-            Session::set('headhunter_name', $result['name']);
-            return ['code' => 0, 'message' => '登录成功', 'data' => []];
+            Session::set('name', $result['name']);
+            Session::set('permission', $result['permission']);
+            unset($result['headhunter_id'], $result['account'], $result['password']);
+            return ['code' => 0, 'message' => '登录成功', 'data' => $result];
         }
         else {
             return ['code' => 1, 'message' => '密码不正确', 'data' => []];
@@ -50,7 +52,23 @@ class Headhunter extends Model
     }
 
     public function index() {
-        $name = Session::get('headhunter_name');
+        $name = Session::get('name');
         return $name ? $name : '';
+    }
+
+    /**
+     * 猎头列表
+     * @param
+     * @return
+     */
+    public function get_user_list() {
+        try {
+            $result = Db::name('headhunter')
+                ->select();
+        }
+        catch (\Exception $e) {
+            return ['code' => 1, 'message' => '没有查询到猎头', 'data' => []];
+        }
+        return ['code' => 0, 'message' => '查找成功', 'data' => $result];
     }
 }

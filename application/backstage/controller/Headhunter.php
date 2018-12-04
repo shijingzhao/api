@@ -61,6 +61,25 @@ class Headhunter extends Controller
         return ['code' => 0, 'message' => $result, 'data' => []];
     }
 
-    public function test() {
+    /**
+     * 猎头列表
+     * @param
+     * @return
+     */
+    public function userList() {
+        // 是否登录,如果登录->不需要重复登录
+        $result = Permission::is_login();
+        if ($result) {
+            return ['code' => 0, 'message' => 'is login', 'data' => []];
+        }
+        // 进入模型
+        $headhunter_obj = new HeadhunterModel();
+        $result = $headhunter_obj->get_user_list();
+        if ($result['code'] == 0) {
+            return $result;
+        }
+        else {
+            return $result;
+        }
     }
 }

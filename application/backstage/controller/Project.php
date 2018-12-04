@@ -35,7 +35,7 @@ class Project extends Controller
         }
         // 传入模型,创建新的项目
         $project_obj = new ProjectModel();
-        $result = $project_obj->create_new_Project($param);
+        $result = $project_obj->create_new_project($param);
         if ($result['code'] == 0) {
             return ['code' => 0, 'message' => '项目创建成功', 'data' => []];
         }
