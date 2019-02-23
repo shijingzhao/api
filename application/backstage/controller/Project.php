@@ -24,23 +24,23 @@ class Project extends Controller
         // 是否登录,如果没有登录需要从新登录
         $result = Permission::is_login();
         if ($result) {
-            return ['code' => 1, 'message' => 'not login', 'data' => []];
+            return ['code' => 1, 'msg' => 'not login', 'data' => []];
         }
         // 接受参数
         $param = Request::param();
         // 参数验证
         $validate = new ProjectValidate();
         if (!$validate->scene('new')->check($param)) {
-            return ['code' => 1, 'message' => $validate->getError(), 'data' => []];
+            return ['code' => 1, 'msg' => $validate->getError(), 'data' => []];
         }
         // 传入模型,创建新的项目
         $project_obj = new ProjectModel();
         $result = $project_obj->create_new_project($param);
         if ($result['code'] == 0) {
-            return ['code' => 0, 'message' => '项目创建成功', 'data' => []];
+            return ['code' => 0, 'msg' => '项目创建成功', 'data' => []];
         }
         else {
-            return ['code' => 1, 'message' => $result['message'], 'data' => []];
+            return ['code' => 1, 'msg' => $result['msg'], 'data' => []];
         }
     }
 
@@ -53,24 +53,48 @@ class Project extends Controller
         // 是否登录,如果没有登录需要从新登录
         $result = Permission::is_login();
         if ($result) {
-            return ['code' => 1, 'message' => 'not login', 'data' => []];
+            return ['code' => 1, 'msg' => 'not login', 'data' => []];
         }
         // 接收参数
         $param = Request::param();
         // 参数验证
         $validate = new ProjectValidate();
         if (!$validate->scene('get')->check($param)) {
-            return ['code' => 1, 'message' => $validate->getError(), 'data' => []];
+            return ['code' => 1, 'msg' => $validate->getError(), 'data' => []];
         }
         // 传入模型,查找项目
         $project_obj = new ProjectModel();
         $result = $project_obj->get_project($param);
         if ($result['code'] == 0) {
-            return ['code' => 0, 'message' => '项目查找成功', 'data' => $result['data']];
+            return ['code' => 0, 'msg' => '项目查找成功', 'data' => $result['data']];
         }
         else {
-            return ['code' => 1, 'message' => $result['message'], 'data' => []];
+            return ['code' => 1, 'msg' => $result['msg'], 'data' => []];
         }
+    }
+
+    /**
+     * 项目列表
+     * @param
+     * @return
+     */
+    public function listProject() {
+        // 是否登录,如果没有登录需要从新登录
+        $result = Permission::is_login();
+        if ($result) {
+            return ['code' => 1, 'msg' => 'not login', 'data' => []];
+        }
+        // 接收参数
+        $param = Request::param();
+        // 参数验证
+        $validate = new ProjectValidate();
+        if (!$validate->scene('page')->check($param)) {
+            return ['code' => 1, 'msg' => $validate->getError(), 'data' => []];
+        }
+        // 传入模型,查找项目
+        $project_obj = new ProjectModel();
+        $result = $project_obj->list_project($param);
+        return $result;
     }
 
     /**
@@ -82,16 +106,18 @@ class Project extends Controller
         // 是否登录,如果没有登录需要从新登录
         $result = Permission::is_login();
         if ($result) {
-            return ['code' => 1, 'message' => 'not login', 'data' => []];
+            return ['code' => 1, 'msg' => 'not login', 'data' => []];
+        }
+        // 接收参数
+        $param = Request::param();
+        // 参数验证
+        $validate = new ProjectValidate();
+        if (!$validate->scene('page')->check($param)) {
+            return ['code' => 1, 'msg' => $validate->getError(), 'data' => []];
         }
         // 传入模型,查找项目
         $project_obj = new ProjectModel();
-        $result = $project_obj->my_project();
-        if ($result['code'] == 0) {
-            return ['code' => 0, 'message' => '项目查找成功', 'data' => $result['data']];
-        }
-        else {
-            return ['code' => 1, 'message' => $result['message'], 'data' => []];
-        }
+        $result = $project_obj->my_project($param);
+        return $result;
     }
 }

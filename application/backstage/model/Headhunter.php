@@ -21,17 +21,17 @@ class Headhunter extends Model
     public function login($param) {
         $result = Db::name('headhunter')->where('account', $param['account'])->field('headhunter_id, account, password, name, gender, permission')->find();
         if (empty($result)) {
-            return ['code' => 1, 'message' => '账户不存在', 'data' => []];
+            return ['code' => 1, 'msg' => '账户不存在', 'data' => []];
         }
         else if (password_verify($param['password'], $result['password'])) {
             Session::set('headhunter_id', $result['headhunter_id']);
             Session::set('name', $result['name']);
             Session::set('permission', $result['permission']);
             unset($result['headhunter_id'], $result['account'], $result['password']);
-            return ['code' => 0, 'message' => '登录成功', 'data' => $result];
+            return ['code' => 0, 'msg' => '登录成功', 'data' => $result];
         }
         else {
-            return ['code' => 1, 'message' => '密码不正确', 'data' => []];
+            return ['code' => 1, 'msg' => '密码不正确', 'data' => []];
         }
     }
 
@@ -44,10 +44,10 @@ class Headhunter extends Model
         Session::delete('headhunter_id');
         Session::delete('headhunter_name');
         if (Session::has('headhunter_id') || Session::has('headhunter_name')) {
-            return ['code' => 1, 'message' => '退出失败', 'data' => []];
+            return ['code' => 1, 'msg' => '退出失败', 'data' => []];
         }
         else {
-            return ['code' => 0, 'message' => '退出成功', 'data' => []];
+            return ['code' => 0, 'msg' => '退出成功', 'data' => []];
         }
     }
 
@@ -64,11 +64,19 @@ class Headhunter extends Model
     public function get_user_list() {
         try {
             $result = Db::name('headhunter')
-                ->select();
+                ->field(
+                    'name,
+                     account,
+                     gender,
+                     permission'
+                    )
+                ->selectOrFail();
+            $total = Db::name('headhunter')->selectOrFail();
+            $total = count($total);
         }
         catch (\Exception $e) {
-            return ['code' => 1, 'message' => '没有查询到猎头', 'data' => []];
+            return ['code' => 1, 'msg' => '没有查询到猎头', 'data' => []];
         }
-        return ['code' => 0, 'message' => '查找成功', 'data' => $result];
+        return ['code' => 0, 'count' => $total, 'msg' => '查找成功', 'data' => $result];
     }
 }

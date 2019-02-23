@@ -27,11 +27,11 @@ class Company
         catch (\Exception $e) {
             // echo $e->getMessage(); //SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'JZ201809' for key 'number'
             if (strpos($e->getMessage(), 'Integrity constraint violation')) {
-                return ['code' => 1, 'message' => '项目编号已存在,请您换一个编号', 'data' => []];
+                return ['code' => 1, 'msg' => '项目编号已存在,请您换一个编号', 'data' => []];
             }
-            return ['code' => 1, 'message' => '数据字段不存在', 'data' => []];
+            return ['code' => 1, 'msg' => '数据字段不存在', 'data' => []];
         }
-        return ['code' => 0, 'message' => '数据创建成功', 'data' => []];
+        return ['code' => 0, 'msg' => '数据创建成功', 'data' => []];
     }
 
     /**
@@ -49,14 +49,14 @@ class Company
             // SQLSTATE[42S22]: Column not found: 1054 Unknown column 'id' in 'where clause'
             // SQLSTATE[22001]: String data, right truncated: 1406 Data too long for column 'com_contact' at row 1
             if (strpos($e->getMessage(), 'Column not found')) {
-                return ['code' => 1, 'message' => '更新键不存在', 'data' => []];
+                return ['code' => 1, 'msg' => '更新键不存在', 'data' => []];
             }
             elseif (strpos($e->getMessage(), 'String data')) {
-                return ['code' => 1, 'message' => '字段长度超出限制', 'data' => []];
+                return ['code' => 1, 'msg' => '字段长度超出限制', 'data' => []];
             }
-            return ['code' => 1, 'message' => '未知错误', 'data' => []];
+            return ['code' => 1, 'msg' => '未知错误', 'data' => []];
         }
-        return ['code' => 0, 'message' => '更新成功', 'data' => []];
+        return ['code' => 0, 'msg' => '更新成功', 'data' => []];
     }
 
     /**
@@ -65,6 +65,24 @@ class Company
      * @return
      */
     public function get_company_list() {
-
+        try {
+            // 查询数据库
+            $result = Db::name('company')
+                ->field(
+                    'com_name,
+                     com_contact,
+                     com_tel,
+                     nature,
+                     introduction'
+                    )
+                ->selectOrFail();
+            $total = Db::name('talent')->selectOrFail();
+            $total = count($total);
+        }
+        catch (\Exception $e) {
+            // echo $e;
+            return ['code' => 1, 'msg' => $e->getMessage(), 'data' => []];
+        }
+        return ['code' => 0, 'count' => $total, 'msg' => '查询成功', 'data' => $result];
     }
 }

@@ -27,11 +27,11 @@ class Project extends Model
         catch (\Exception $e) {
             // echo $e->getMessage(); // SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'JZ201809' for key 'number'
             if (strpos($e->getMessage(), 'Integrity constraint violation')) {
-                return ['code' => 1, 'message' => '项目编号已存在,请您换一个编号', 'data' => []];
+                return ['code' => 1, 'msg' => '项目编号已存在,请您换一个编号', 'data' => []];
             }
-            return ['code' => 1, 'message' => '数据字段不存在', 'data' => []];
+            return ['code' => 1, 'msg' => '数据字段不存在', 'data' => []];
         }
-        return ['code' => 0, 'message' => '数据创建成功', 'data' => []];
+        return ['code' => 0, 'msg' => '数据创建成功', 'data' => []];
     }
 
     /**
@@ -74,17 +74,51 @@ class Project extends Model
         catch (\Exception $e) {
             // 异常捕获
             // echo $e->getMessage();  // table data not Found:db_project
-            return ['code' => 1, 'message' => '没有查到此条数据', 'data' => []];
+            return ['code' => 1, 'msg' => '没有查到此条数据', 'data' => []];
         }
-        return ['code' => 0, 'message' => '数据查找成功', 'data' => $result];
+        return ['code' => 0, 'msg' => '数据查找成功', 'data' => $result];
+    }
+
+    /**
+     * 项目列表
+     * @param page  页码
+     * @param limit 每页多少条
+     * @return
+     */
+    public function list_project($param) {
+        try {
+            $result = Db::name('project')
+                ->field(
+                    'number,
+                     name,
+                     start_date,
+                     plan_date,
+                     project_status,
+                     priority,
+                     client_name,
+                     collection_status'
+                    )
+                ->page($param['page'], $param['limit'])
+                ->selectOrFail();
+            $total = Db::name('project')->selectOrFail();
+            $total = count($total);
+        }
+        catch (\Exception $e) {
+            // 异常捕获
+            // echo $e->getMessage();  // table data not Found:db_project
+            return ['code' => 1, 'msg' => '没有查到此条数据', 'data' => []];
+        }
+
+        return ['code' => 0, 'count' => $total, 'msg' => '数据查找成功', 'data' => $result];
     }
 
     /**
      * 我的项目
-     * @param
+     * @param page  页码
+     * @param limit 每页多少条
      * @return
      */
-    public function my_project() {
+    public function my_project($param) {
         try {
             $result = Db::name('project')
                 ->where('headhunter_id', Session::get('headhunter_id'))
@@ -98,13 +132,17 @@ class Project extends Model
                      client_name,
                      collection_status'
                     )
+                ->page($param['page'], $param['limit'])
                 ->selectOrFail();
+            $total = Db::name('project')->where('headhunter_id', Session::get('headhunter_id'))->selectOrFail();
+            $total = count($total);
         }
         catch (\Exception $e) {
             // 异常捕获
             // echo $e->getMessage();  // table data not Found:db_project
-            return ['code' => 1, 'message' => '没有查到此条数据', 'data' => []];
+            return ['code' => 1, 'msg' => '没有查到此条数据', 'data' => []];
         }
-        return ['code' => 0, 'message' => '数据查找成功', 'data' => $result];
+
+        return ['code' => 0, 'count' => $total, 'msg' => '数据查找成功', 'data' => $result];
     }
 }

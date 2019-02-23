@@ -24,14 +24,14 @@ class Headhunter extends Controller
         // 是否登录,如果登录->不需要重复登录
         $result = Permission::is_login();
         if (!$result) {
-            return ['code' => 0, 'message' => 'is login', 'data' => []];
+            return ['code' => 0, 'msg' => 'is login', 'data' => []];
         }
         // 接受参数
         $param = Request::param();
         // 参数验证
         $validate = new HeadhunterValidate();
         if (!$validate->scene('login')->check($param)) {
-            return ['code' => 1, 'message' => $validate->getError(), 'data' => []];
+            return ['code' => 1, 'msg' => $validate->getError(), 'data' => []];
         }
         // 传入模型,验证账号和密码是否正确
         $admin_obj = new HeadhunterModel();
@@ -58,7 +58,7 @@ class Headhunter extends Controller
     public function index() {
         $admin_obj = new HeadhunterModel();
         $result = $admin_obj->index();
-        return ['code' => 0, 'message' => $result, 'data' => []];
+        return ['code' => 0, 'msg' => $result, 'data' => []];
     }
 
     /**
@@ -66,20 +66,15 @@ class Headhunter extends Controller
      * @param
      * @return
      */
-    public function userList() {
+    public function list() {
         // 是否登录,如果登录->不需要重复登录
         $result = Permission::is_login();
         if ($result) {
-            return ['code' => 0, 'message' => 'is login', 'data' => []];
+            return ['code' => 0, 'msg' => 'is login', 'data' => []];
         }
         // 进入模型
         $headhunter_obj = new HeadhunterModel();
         $result = $headhunter_obj->get_user_list();
-        if ($result['code'] == 0) {
-            return $result;
-        }
-        else {
-            return $result;
-        }
+        return $result;
     }
 }

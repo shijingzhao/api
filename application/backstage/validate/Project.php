@@ -37,6 +37,8 @@ class Project extends Validate
         'language'              => 'require',
         'education'             => 'require',
         'com_id'                => 'require',
+        'page'                  => 'require',
+        'limit'                 => 'require',
     ];
 
     // 验证场景
@@ -68,6 +70,10 @@ class Project extends Validate
         ],
         'get'   =>  [
             'project_id'
-        ]
+        ],
+        'page'  =>  [
+            'page',
+            'limit',
+        ],
     ];
 }
